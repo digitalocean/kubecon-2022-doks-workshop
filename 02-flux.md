@@ -1,17 +1,26 @@
 # Chapter 2 - Build a GitOps Pipleline with Flux
 
-Find cluster name 
-`kubectl config get-contexts`
+## Rationale 
 
-explanation 
+The `GitOps` term is not quite new, and most likely you heard about it at some point in time. If not, you will start to hear about it more and more often. In a nutshell, `GitOps` is just a set of practices that focuses around the main idea of having `Git` as the single source of trut`. It means, you keep all your Kubernetes configuration manifests stored in a `Git` repository. Then, a GitOps tool (such as [Flux CD](https://fluxcd.io) or [Argo CD](https://argoproj.github.io/cd/)) fetches current configuration from the Git repository, and applies required changes to your Kubernetes cluster to maintain desired state.
 
-what we're building 
-<img>
+The GitOps tool continuously watches the current system state (your Kubernetes cluster) and Git repository state. If there's a difference (or deviation) between the two, it will take the appropriate actions to match Git repository state. It means, whenever someone applies manual changes (via `kubectl`) those will be overwritten, and your Kubernetes applications state reverted to reflect current configuration from Git repository. In other words, the Git repository always wins, hence the statement - Git as the single source of truth. This approach has a tremendous advantage, because it eliminates all issues due to manual system changes which cannot be tracked or audited.
+
+So, `GitOps` keeps your system state synchronized with a `Git` repository, and works with infrastructure that can be observed and described declaratively (like Kubernetes, for example). One of the core ideas of GitOps is letting developers use the tools they are familiar with to operate your infrastructure. The most used source control management today is `Git`, hence the term `GitOps`.
+
+Flux CD helps you synchronize the state of your infrastructure using Git as the source of truth, thus following GitOps principles. Flux also helps you implement continuous delivery for your applications. It knows how to handle Helm releases as well, thus you can control application deployment and lifecycle via the standard package manager for Kubernetes.
+
+The process of synchronizing your DOKS cluster state with a Git repository, is called reconciliation. Reconciliation makes sure that your applications state match a desired state declaratively defined somewhere (can be a Git repository, Helm repository or a S3 bucket).
+
+In this chapter, you will use Helm to install FluxCD which will synchronize with a Github repo. 
+
+![image](https://raw.githubusercontent.com/digitalocean/Kubernetes-Starter-Kit-Developers/main/15-continuous-delivery-using-gitops/assets/images/fluxcd_overview.png)
+
+
 
 ### Prerequisites
-- Cluster up and running 
-- Helm 
-- Flux CLI 
+- [A Github account](https://github.com/signup)
+- [Flux CLI](https://fluxcd.io/docs/installation/#install-the-flux-cli)
 
 ## Instructions 
 
@@ -202,4 +211,3 @@ After finishing all the steps from this tutorial, you should have a `Git` reposi
 
 ### Additional Resources 
 - https://github.com/digitalocean/Kubernetes-Starter-Kit-Developers/blob/main/15-continuous-delivery-using-gitops
-
