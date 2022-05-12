@@ -8,7 +8,7 @@ The goal of this [session](https://kccnceu2022.sched.com/event/yto4/gitops-to-au
 This workshop is designed for you to pick and choose what you want to learn. Everyone should complete chapters 1 and 5, spinning up and a down a Kubernetes cluster, but you can choose the other chapters you would like to complete. Here is an overview of the material: 
 
 - Required: [Chapter 1 - Create a DigitalOcean Kubernetes Cluster with Terraform](./01-cluster-setup.md)
-- Optional: [Chapter 2 - Build a GitOps Pipleline with Flux](./02-flux.md)
+- Optional: [Chapter 2 - Build a GitOps Pipeline with Flux](./02-flux.md)
 - Optional: [Chatper 3 - Encrypt Kubernetes Secrets Using Sealed Secrets](./03-sealed-secrets.md)
 - Optional: [Chapter 4 - Make Your Cluster a Universal Control Plane with Crossplane](./04-crossplane.md)
 - Required: [Chapter 5 - Destroy a DigitalOcean Kubernetes Cluster with Terraform](./05-cluster-teardown.md)

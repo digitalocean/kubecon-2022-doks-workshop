@@ -1,4 +1,4 @@
-# Chapter 2 - Build a GitOps Pipleline with Flux
+# Chapter 2 - Build a GitOps Pipeline with Flux
 
 ## Rationale 
 
