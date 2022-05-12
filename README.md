@@ -34,18 +34,23 @@ Chapter 3
 - [kubeseal](https://github.com/bitnami-labs/sealed-secrets#homebrew)
 
 Chapter 4 
-- Crossplane
+- n/a
 
 ### Troubleshooting Tips 
 If you get stuck, please try the following things in order: 
 
 1. Reread the instructions and try the last command again
 1. Google the error
-1. Ask someone sitting near you if they can help or ask in the Slack channel 
-1. Raise your hand and wait for a DigitalOcean employee to help
+1. If you are at the conference in-person, ask for help from someone sitting near you, or raise your hand and wait for a DigitalOcean employee to help
+1. Ask for help in the #xxxx Slack channel
+
 
 ### Additional Learning Resources 
 If you enjoyed this workshop, please checkout some of DigitalOcean's other Kubernetes learning materials at our [Kubernetes Resources Page](https://www.digitalocean.com/landing/doks-resources). 
 
 
+
+To Do:
+- Add DO logo or Sammy image 
+- Add DO badge 
 
