@@ -14,7 +14,7 @@ Documentation](https://kubernetes.io/docs/concepts/overview/components/)
 
 ## Prerequisites
 - [A DigitalOcean Account](https://cloud.digitalocean.com/registrations/new)
-- doctl
+- [doctl](https://docs.digitalocean.com/reference/doctl/how-to/install/)
 - [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli#install-terraform) 
 - [kubectl](https://kubernetes.io/docs/tasks/tools/)
 
@@ -39,7 +39,9 @@ cd kubecon-2022-doks-workshop
 - Follow the instructions here: [How to Create a Personal Access Token](https://docs.digitalocean.com/reference/api/create-personal-access-token/)
 - Copy your new token to your clipboard
 
-### Step 4 - Export your token as an environment variable called `DO_TOKEN`. Make sure to replace the `<>` placeholders accordingly
+### Step 4 - Export your token as an environment variable called `DO_TOKEN`. 
+
+Note: Make sure to replace the `<>` placeholders accordingly
 
 ```sh
 export DO_TOKEN="<YOUR_DO_TOKEN>"
@@ -130,8 +132,8 @@ You should see output similar to this:
 ```sh
 NAME                   STATUS   ROLES    AGE    VERSION
 kubecon-node-cbu76     Ready    <none>   1m     v1.22.8
-kubecon-node-cbu7a     Ready    <none>   6d3h   v1.22.8
-kubecon-node-cbu7e     Ready    <none>   6d3h   v1.22.8
+kubecon-node-cbu7a     Ready    <none>   1m     v1.22.8
+kubecon-node-cbu7e     Ready    <none>   1m     v1.22.8
 ``` 
 
 Congratulations! You have created a Kubernetes Cluster with Terraform. Now you are ready to go on to Chapter 2, 3 or 4. 
