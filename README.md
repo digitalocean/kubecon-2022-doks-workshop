@@ -15,6 +15,7 @@ This workshop is designed for you to pick and choose what you want to learn. Eve
 
 It is unlikely you'll be able to complete the entire workshop in 90 minutes, and we encourage you to finish it up at another time. 
 
+### Promo Code 
 <add promo code instruction here, including expiration info>
 You will get a $100 credit for this workshop. Once you are logged into your DigitalOcean account, please use the credit code: `KIM@KCEU100` 
 
