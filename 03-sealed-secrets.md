@@ -1,5 +1,8 @@
-# Sealed Secrets 
-##  Creating the Sealed Secrets Helm Release
+# Chapter 3 - Encrypt Kubernetes Secrets Using Sealed Secrets
+
+Next, you're going to provision the required `Flux CD` manifests for each component of the `Starter Kit`. Then, you will inspect and commit each manifest to your `Git` repository used by `Flux CD` to reconcile your `DOKS` cluster. For sensitive data, a `Kubernetes Secrets` will be created and `encrypted` using `Sealed Secrets`, and then stored in your `Git` repository as well.
+
+First example will make use of the `Flux CLI` for you to accommodate and get familiarized with creating manifests via the `CLI`. Then, you will use the already prepared `manifests` provided by the `Starter Kit` repository, to speed up the steps from this tutorial.
 
 In this step, you will learn how to create manifests using the `Flux CLI`, to define the `Sealed Secrets` Helm release. Then, `Flux` will trigger the `Sealed Secrets Controller` installation process for your `DOKS` cluster.
 

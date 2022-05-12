@@ -1,4 +1,5 @@
-# Title
+# Chapter 2 - Build a GitOps Pipleline with Flux
+
 Find cluster name 
 `kubectl config get-contexts`
 
@@ -18,9 +19,9 @@ what we're building
 
 `Flux CD` provides a `CLI` binary which you can use for provisioning `Flux CD` itself, as well as for main system interaction. Using the `flux bootstrap` subcommand, you can install Flux on a Kubernetes cluster and configure it to manage itself from a Git repository.
 
-If the Flux components are present on the cluster, the bootstrap command will perform an upgrade if needed. The bootstrap is idempotent, it’s safe to run the command as many times as you want.
+If the Flux components are present on the cluster, the bootstrap command will perform an upgrade if needed. The bootstrap is idempotent and it is safe to run the command as many times as you want.
 
-Bootstrapping Flux CD on an existing DOKS cluster:
+Bootstrapping Flux CD on your existing DOKS cluster:
 
 1. Generate a [GitHub personal access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line) that can create repositories by checking all permissions under `repo`.
 2. Export your GitHub personal access token as an environment variable (make sure to replace the `<>` placeholders accordingly):
@@ -29,16 +30,16 @@ Bootstrapping Flux CD on an existing DOKS cluster:
     export GITHUB_TOKEN=<YOUR_PERSONAL_ACCESS_TOKEN_HERE>
     ```
 
-3. Run the bootstrap for a repository on your personal GitHub account (make sure to replace the `<>` placeholders accordingly):
+3. Run the bootstrap command to create a repository on your personal GitHub account (make sure to replace the `<>` placeholders accordingly):
 
     ```shell
     flux bootstrap github \
       --owner=<YOUR_GITHUB_USER> \
-      --repository=<YOUR_GITHUB_REPOSITORY_NAME> \
+      --repository=kubecon-workshop \
       --path=clusters/dev \
       --personal
     ```
-
+      
 Explanations for the above command:
 
 - `--owner`: Holds your GitHub user name.
@@ -47,7 +48,7 @@ Explanations for the above command:
 
 The flux bootstrap command will create the specified GitHub repository if it doesn't exist, and will start the provisioning process for Flux CD. In the end, you should have a bunch of YAML manifests created in your Git repository, as well as all Kubernetes resources required by Flux CD to work.
 
-Next, you can perform some `sanity checks` via:
+Next, check that flux is working:
 
 ```shell
 flux check
@@ -128,9 +129,9 @@ In the next step, you will prepare the `Git` repository layout for use in this t
 
 You can throw all the manifests under the Flux CD sync path (e.g. `clusters/dev`), but it's best practice to keep things organized and follow naming conventions as much as possible to avoid frustration in the future.
 
-## Step 4 - Cloning the Flux CD Git Repository and Preparing the Layout
+## Step 2 - Cloning the Flux CD Git Repository and Preparing the Layout
 
-In this step, you will learn how to `organize` your `Git` repository used by `Flux CD` to sync your `DOKS` cluster `state`. For simplicity, this tutorial is based on a `monorepo` structure, and is using a `single environment` to hold all your manifests (e.g. `clusters/dev`). You can check the official Flux CD documentation for some guidance on how to setup your [Git repository structure](https://fluxcd.io/docs/guides/repository-structure).
+In this step, you will learn how to organize your `Git` repository used by `Flux CD` to sync your `DOKS` cluster `state`. For simplicity, this tutorial is based on a `monorepo` structure, and is using a `single environment` to hold all your manifests (e.g. `clusters/dev`). You can check the official Flux CD documentation for some guidance on how to setup your [Git repository structure](https://fluxcd.io/docs/guides/repository-structure).
 
 Please make sure that the following steps are performed in order:
 
@@ -198,11 +199,6 @@ After finishing all the steps from this tutorial, you should have a `Git` reposi
 │               └── prometheus-stack-credentials-sealed.yaml
 └── pub-sealed-secrets-dev-cluster.pem
 ```
-
-Next, you're going to provision the required `Flux CD` manifests for each component of the `Starter Kit`. Then, you will inspect and commit each manifest to your `Git` repository used by `Flux CD` to reconcile your `DOKS` cluster. For sensitive data, a `Kubernetes Secrets` will be created and `encrypted` using `Sealed Secrets`, and then stored in your `Git` repository as well.
-
-First example will make use of the `Flux CLI` for you to accommodate and get familiarized with creating manifests via the `CLI`. Then, you will use the already prepared `manifests` provided by the `Starter Kit` repository, to speed up the steps from this tutorial.
-
 
 ### Additional Resources 
 - https://github.com/digitalocean/Kubernetes-Starter-Kit-Developers/blob/main/15-continuous-delivery-using-gitops
