@@ -13,7 +13,7 @@ This workshop is designed for you to pick and choose what you want to learn. Eve
 - Optional: [Chapter 4 - Make Your Cluster a Universal Control Plane with Crossplane](./04-crossplane.md)
 - Required: [Chapter 5 - Destroy a DigitalOcean Kubernetes Cluster with Terraform](./05-cluster-teardown.md)
 
-It is unlikely you'll be able to complete the entire workshop in 90 minutes, and we encourage you to finish it up at another time. 
+It is unlikely you'll be able to complete the entire workshop in 90 minutes, so once you've got a cluster up and running, we encourage you to pick the optional chapter that is most interesting to you, and then have you finish up the other chapters at another time. 
 
 ### Promo Code 
 <add promo code instruction here, including expiration info>
