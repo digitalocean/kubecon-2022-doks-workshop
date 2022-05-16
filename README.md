@@ -28,14 +28,14 @@ This workshop is designed for you to pick and choose what you want to learn. Eve
 It is unlikely you'll be able to complete the entire workshop in 90 minutes, so once you've got a cluster up and running, we encourage you to work through the chapter that looks most interesting to you and finish up the other chapters at another time. 
 
 ### Promo Code 
-In this workshop, you will spin up a [DigitalOcean Managed Kubernetes Cluster](https://www.digitalocean.com/products/kubernetes). You will get a $100 credit for this workshop, and in order to redeem the credit, you will need a DigitalOcean Account. 
+In this workshop, you will spin up a [DigitalOcean Managed Kubernetes Cluster](https://www.digitalocean.com/products/kubernetes). You will get a $100 credit for this workshop, and in order to [redeem the credit](https://docs.digitalocean.com/products/billing/promo-codes/), you will need a DigitalOcean Account. 
 
 Once you are logged into your DigitalOcean account, go to the billing page, find the promo code section and enter the code `KIM@KCEU100` 
 
 **Note:**  
 If you have an existing DigitalOcean account that has already used a promo code, we will have to manually add the credits to your account. There are two ways to handle this at the session: 
 
-1. Share the email address associated with your account and we we manually apply the code after the workshop. 
+1. Share the email address associated with your account and we will manually apply the code after the workshop. 
 1. Create a new account with a different email address.
 
 ### Prerequisites
