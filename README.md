@@ -1,7 +1,6 @@
 # KubeCon EU 2022 Workshop 
 ## GitOps to Automate the Setup, Management and Extension of a Kubernetes Cluster 
 
-
 [![DigitalOcean Referral Badge](https://web-platforms.sfo2.digitaloceanspaces.com/WWW/Badge%203.svg)](https://www.digitalocean.com/?refcode=0396fb078dbc&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge)
 
 ### Welcome! 
@@ -11,10 +10,10 @@ The goal of this [session](https://kccnceu2022.sched.com/event/yto4/gitops-to-au
 This workshop is designed for you to pick and choose what you want to learn. Everyone should complete chapters 1 and 5, spinning up and a down a Kubernetes cluster with Terraform, but you can choose the other chapters you would like to complete. Here is an overview of the material: 
 
 ### Schedule
-| Time  | Activity  |   |   |   |
-|---|---|---|---|---|
-| 30 min  |Welcome, Orientation and Chapter 1   |   |   |   |
-| 40 min  | Choose Your Own Adventure   |   |   |   |
+| Time  | Activity |   
+|---|---| 
+| 30 min  |Welcome, Orientation and Chapter 1   |  
+| 40 min  | Choose Your Own Adventure   |   
 | 20 min  | Chapter 5, Wrap up and Debrief |   
 
 ### Content 
@@ -54,7 +53,10 @@ Chapter 3
 - [kubeseal](https://github.com/bitnami-labs/sealed-secrets#homebrew)
 
 Chapter 4 
-- n/a
+- [Crossplane CLI](https://crossplane.github.io/docs/v1.7/getting-started/install-configure.html#install-crossplane-cli)
+```sh 
+curl -sL https://raw.githubusercontent.com/crossplane/crossplane/master/install.sh | sh
+```
 
 ### Troubleshooting Tips 
 If you get stuck during the workshop, please try the following things in order: 

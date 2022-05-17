@@ -5,7 +5,7 @@ In order to setup a GitOps workflow, you need to use an Infrastructure as Code (
 
 [Terraform](https://www.terraform.io/) is software that uses declarative configuration files to automate the provisioning of infrastructure resources like compute instances, managed databases, firewalls and Kubernetes Clusters. 
 
-In this chapter we will use Terraform to create a DigitalOcean Managed Kubernetes Cluster with a controle plane and three nodes, like the diagram below. 
+In this chapter we will use Terraform to create a DigitalOcean Managed Kubernetes Cluster with a control plane and three nodes, like the diagram below. 
 
 ![kubernetes diagram showing a cluster with a control plane and three nodes](https://d33wubrfki0l68.cloudfront.net/2475489eaf20163ec0f54ddc1d92aa8d4c87c96b/e7c81/images/docs/components-of-kubernetes.svg)
 
@@ -22,45 +22,53 @@ Documentation](https://kubernetes.io/docs/concepts/overview/components/)
 
 ### Step 1 - Clone and change into the workshop repository 
 
-Go to Github and clone the [KubeCon EU 2022 Workshop Repo](https://github.com/digitalocean/kubecon-2022-doks-workshop/blob/main/). Change into the directory with the command 
+!!! fix the broken link 
+Go to Github and clone the [KubeCon EU 2022 Workshop Repo](https://github.com/digitalocean/kubecon-2022-doks-workshop/) and then change into the directory. 
 
+To clone with SSH: 
 ```sh
+git clone git@github.com:digitalocean/kubecon-2022-doks-workshop.git
 cd kubecon-2022-doks-workshop
 ```
-### Step 2 - Install and Configure `doctl` 
-1. [Install doctl](https://docs.digitalocean.com/reference/doctl/how-to/install/)
+
+To clone with HTTPS: 
+```
+git clone https://github.com/digitalocean/kubecon-2022-doks-workshop.git
+cd kubecon-2022-doks-workshop
+
+```
+
+### Step 2 - Configure `doctl` 
 1. [Create an API token](https://docs.digitalocean.com/reference/doctl/how-to/install/#step-2-create-an-api-token)
-1. [Use the API token to grant account access to doctl](https://docs.digitalocean.com/reference/doctl/how-to/install/#step-3-use-the-api-token-to-grant-account-access-to-doctl)
-1. [Validate that doctl is working](https://docs.digitalocean.com/reference/doctl/how-to/install/#step-4-validate-that-doctl-is-working)
-
-### Step 3 - Generate another DigitalOcean personal access token
-
-- Log into your DigitalOcean account at [https://cloud.digitalocean.com/](https://cloud.digitalocean.com/).
-- Follow the instructions here: [How to Create a Personal Access Token](https://docs.digitalocean.com/reference/api/create-personal-access-token/)
-- Copy your new token to your clipboard
-
-### Step 4 - Export your token as an environment variable called `DO_TOKEN`. 
-
-Note: Make sure to replace the `<>` placeholders accordingly
-
+1. Export your token as an environment variable called `DO_TOKEN`.
 ```sh
 export DO_TOKEN="<YOUR_DO_TOKEN>"
 ```
-Check that the value was stored properly
-
+1. Make sure your token is copied to your clipboard 
 ```sh
 echo $DO_TOKEN
 ```
-You should see your token displayed in your terminal. 
+1. [Use the API token to grant account access to doctl](https://docs.digitalocean.com/reference/doctl/how-to/install/#step-3-use-the-api-token-to-grant-account-access-to-doctl)
+```sh
+doctl auth init 
+```
+1. [Validate that doctl is working](https://docs.digitalocean.com/reference/doctl/how-to/install/#step-4-validate-that-doctl-is-working)
+```sh
+doctl account get
+```
 
-### Step 5 -  Update the [doks.tf](./terraform/doks.tf) file
+Note: Since Windows doesn't support enviornment variables, windows users keep the token on their clipboard to easily paste. 
+
+
+!!! mention that we'll go through the file once we've applied
+### Step 4 -  Update the [doks.tf](./terraform/doks.tf) file
 
 Look for the comments and check the following: 
 
 - Change the datacenter region to one that is geographically close to you 
 - Ensure you have the slug for latest version of DigitalOcean Kubernetes 
 
-### Step 6 -  Initialize your Terraform working directory
+### Step 5 -  Initialize your Terraform working directory
 
 Change into the Terraform directory and run the initialize command: 
 
@@ -83,7 +91,7 @@ rerun this command to reinitialize your working directory. If you forget, other
 commands will detect it and remind you to do so if necessary.
 ```
 
-### Step 7 - Run Terraform Plan and Apply 
+### Step 6 - Run Terraform Plan and Apply 
 
 Run `terraform plan` 
 ```sh
@@ -109,7 +117,7 @@ If the apply is successful, it will take a 4-5 minutes for your cluster to provi
 
 To see the status of your cluster, go to the [DigitalOcean Cloud Console](https://cloud.digitalocean.com/) and click on the Kubernetes Tab. You will see a progress bar indicating whether or not your cluster is fully provisioned. When your cluster is ready, Terraform will also send you a success message in the terminal. 
 
-### Step 8 - Add an authentication token or certificate to your `kubectl` configuration file to connect
+### Step 7 - Add an authentication token or certificate to your `kubectl` configuration file to connect
 
 Once your cluster is ready, download a kubeconfig file with your authentication data. 
 
@@ -119,7 +127,7 @@ From the Kubernetes view in the Cloud Console, click on the `Overview` tab and g
 
 For more in-depth instructions, please see the official DigitalOcean documentation on [how to connect to a cluster](https://docs.digitalocean.com/products/kubernetes/how-to/connect-to-cluster/). 
 
-### Step 9 -  Verify your cluster is up and running and that you can connect
+### Step 8 -  Verify your cluster is up and running and that you can connect
 
 When your cluster is ready, run the command 
 

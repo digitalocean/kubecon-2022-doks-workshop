@@ -1,5 +1,7 @@
 # Chapter 2 - Build a GitOps Pipeline with Flux
 
+!!! update Flux version
+
 ## Rationale 
 
 The `GitOps` term is not quite new, and most likely you heard about it at some point in time. If not, you will start to hear about it more and more often. In a nutshell, `GitOps` is just a set of practices that focuses around the main idea of having `Git` as the single source of trut`. It means, you keep all your Kubernetes configuration manifests stored in a `Git` repository. Then, a GitOps tool (such as [Flux CD](https://fluxcd.io) or [Argo CD](https://argoproj.github.io/cd/)) fetches current configuration from the Git repository, and applies required changes to your Kubernetes cluster to maintain desired state.
