@@ -1,0 +1,13 @@
+apiVersion: compute.do.crossplane.io/v1alpha1
+kind: Droplet
+metadata:
+  name: example
+  annotations:
+    crossplane.io/external-name: crossplane-droplet
+spec:
+  forProvider:
+    region: ams3
+    size: s-1vcpu-1gb
+    image: ubuntu-20-04-x64
+  providerConfigRef:
+    name: do-example

@@ -9,7 +9,7 @@
 
 # Directories
 .terraform/
-crossplane/
+
 
 # Ignored Terraform files
 *gitignore*.tf

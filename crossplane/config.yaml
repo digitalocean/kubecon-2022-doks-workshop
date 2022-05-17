@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: crossplane-system
+  name: provider-do-secret
+type: Opaque
+data:
+  # this is an opportunity to use sealed secrets 
+  token: BASE64ENCODED_PROVIDER_CREDS
+---
+apiVersion: do.crossplane.io/v1alpha1
+kind: ProviderConfig
+metadata:
+  name: do-example
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      namespace: crossplane-system
+      name: provider-do-secret
+      key: token
