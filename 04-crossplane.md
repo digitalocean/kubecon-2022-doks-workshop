@@ -1,14 +1,10 @@
 # Chapter 4 - Make Your Cluster a Universal Control Plane with Crossplane
 
-[Crossplane](https://crossplane.io/) is an open source project that lets you turn a Kubernetes cluster into a universal control plane. Crossplane allows you to create digital infrastructure resources from inside a Kubernetes cluster, lets you setup multi-cloud infrastructure in one place and gives platform engineers a way to let application developers spin up and down cloud resources without requiring extensive knowledge of the cloud. 
+[Crossplane](https://crossplane.io/) is an open source project that lets you turn a Kubernetes cluster into a universal control plane. Crossplane allows you to create digital infrastructure resources from inside a Kubernetes cluster, allows you to setup multi-cloud infrastructure in one place and gives platform engineers a way to let application developers spin up and down cloud resources without requiring extensive knowledge of the cloud. 
 
 With Crossplane, all cloud resources are stored in the Kubernetes API as a Custom Resource Definitions (CRDs), meaning that the resource can be defined through a yaml spec and stored in a code repository, unlocking the power of Infrastructure as Code and a GitOps workflow.
 
 In this chapter we will install Crossplane in our cluster and create a DigitalOcean Droplet. Then, you will install another [Crossplane provider](https://crossplane.io/docs/v1.7/concepts/providers.html) that you chose and spin up a cloud resource from that provider. 
-
-<img>
-
-!!! lucid chart showing a provider, secret and provider config 
 
 ### Prerequisites
 - n/a
@@ -140,5 +136,5 @@ Following the instructions from the provider's documentation, configure the Secr
 
 Choose a new resource to create. Once you are done, celebrate because you have setup multi-cloud infrastruction with Crossplane! 🎉
 
-#### Additional Resources
+### Learn More
 - [Announcing the DigitalOcean Crossplane Provider](https://www.digitalocean.com/blog/announcing-the-digitalocean-crossplane-provider)

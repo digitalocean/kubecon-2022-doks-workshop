@@ -118,8 +118,7 @@ If the apply is successful, it will take a 4-5 minutes for your cluster to provi
 To see the status of your cluster, go to the [DigitalOcean Cloud Console](https://cloud.digitalocean.com/) and click on the Kubernetes Tab. You will see a progress bar indicating whether or not your cluster is fully provisioned. When your cluster is ready, Terraform will also send you a success message in the terminal. 
 
 ```sh
-
-
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 ```
 
 ### Step 7 - Add an authentication token or certificate to your `kubectl` configuration file to connect
@@ -150,3 +149,6 @@ kubecon-node-cbu7e     Ready    <none>   1m     v1.22.8
 ``` 
 
 Congratulations! You have created a Kubernetes Cluster with Terraform.
+
+### Learn More
+- [Hashicorp Learn: Terraform](https://learn.hashicorp.com/terraform)

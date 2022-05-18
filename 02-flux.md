@@ -1,14 +1,10 @@
 # Chapter 2 - Build a GitOps Pipeline with Flux
 
-!!! update Flux version
-
 ## Rationale 
 
-The `GitOps` term is not quite new, and most likely you heard about it at some point in time. If not, you will start to hear about it more and more often. In a nutshell, `GitOps` is just a set of practices that focuses around the main idea of having `Git` as the single source of trut`. It means, you keep all your Kubernetes configuration manifests stored in a `Git` repository. Then, a GitOps tool (such as [Flux CD](https://fluxcd.io) or [Argo CD](https://argoproj.github.io/cd/)) fetches current configuration from the Git repository, and applies required changes to your Kubernetes cluster to maintain desired state.
+`GitOps` is  a set of practices that focuses around the main idea of having `Git` as the single source of truth. It means, you keep all your Kubernetes configuration manifests stored in a `Git` repository. Then, a GitOps tool (such as [Flux CD](https://fluxcd.io) or [Argo CD](https://argoproj.github.io/cd/)) fetches current configuration from the Git repository, and applies required changes to your Kubernetes cluster to maintain desired state.
 
 The GitOps tool continuously watches the current system state (your Kubernetes cluster) and Git repository state. If there's a difference (or deviation) between the two, it will take the appropriate actions to match Git repository state. It means, whenever someone applies manual changes (via `kubectl`) those will be overwritten, and your Kubernetes applications state reverted to reflect current configuration from Git repository. In other words, the Git repository always wins, hence the statement - Git as the single source of truth. This approach has a tremendous advantage, because it eliminates all issues due to manual system changes which cannot be tracked or audited.
-
-So, `GitOps` keeps your system state synchronized with a `Git` repository, and works with infrastructure that can be observed and described declaratively (like Kubernetes, for example). One of the core ideas of GitOps is letting developers use the tools they are familiar with to operate your infrastructure. The most used source control management today is `Git`, hence the term `GitOps`.
 
 Flux CD helps you synchronize the state of your infrastructure using Git as the source of truth, thus following GitOps principles. Flux also helps you implement continuous delivery for your applications. It knows how to handle Helm releases as well, thus you can control application deployment and lifecycle via the standard package manager for Kubernetes.
 
@@ -133,9 +129,9 @@ flux-system  ssh://git@github.com/test-starterkit/starterkit_fra1.git  True   Fe
 
 You should also see a bunch of Flux CD system manifests present in your Git repository as well:
 
-![This](assets/images/fluxcd_git_components.png)
+![This](https://raw.githubusercontent.com/digitalocean/Kubernetes-Starter-Kit-Developers/main/15-continuous-delivery-using-gitops/assets/images/fluxcd_git_components.png)
 
-In the next step, you will prepare the `Git` repository layout for use in this tutorial. Flux CD is watching for changes present in the `--path` argument that you passed to the `flux bootstrap` command. Starter Kit is using the `clusters/dev` directory path. You can create any directory structure under the `clusters/dev` path to keep things organized. Flux CD will perform a recursive search for all manifests under the `clusters/dev` path.
+In the next step, you will prepare the `Git` repository layout for use in this tutorial. Flux CD is watching for changes present in the `--path` argument that you passed to the `flux bootstrap` command. This instance of Flux is using the `clusters/dev` directory path. You can create any directory structure under the `clusters/dev` path to keep things organized. Flux CD will perform a recursive search for all manifests under the `clusters/dev` path.
 
 You can throw all the manifests under the Flux CD sync path (e.g. `clusters/dev`), but it's best practice to keep things organized and follow naming conventions as much as possible to avoid frustration in the future.
 
@@ -157,7 +153,7 @@ Please make sure that the following steps are performed in order:
     - `<YOUR_GITHUB_REPOSITORY_NAME>` - GitHub repository name used for your `DOKS` cluster `reconciliation` as defined by the `--repository` argument of the flux bootstrap command.
 
 2. Next, change directory where your Flux CD `Git` repository was cloned, and checkout the correct branch (usually `main`).
-3. Now, create the `directory structure` to store Flux CD `HelmRepository`, `HelmRelease` and `SealedSecret` manifests for each component of the `Starter Kit`. Please replace the `FLUXCD_SYNC_PATH` variable value with your `Flux CD` cluster sync directory path, as defined by the `--path` argument of the flux bootstrap command (Starter Kit is using the `clusters/dev` path):
+3. Now, create the `directory structure` to store Flux CD `HelmRepository`, `HelmRelease` and `SealedSecret` manifests for each component. Please replace the `FLUXCD_SYNC_PATH` variable value with your `Flux CD` cluster sync directory path, as defined by the `--path` argument of the flux bootstrap command.
 
     ```shell
     FLUXCD_SYNC_PATH="clusters/dev"
@@ -170,7 +166,7 @@ Please make sure that the following steps are performed in order:
     mkdir -p "${FLUXCD_HELM_MANIFESTS_PATH}/secrets"
     ```
 
-4. Finally, add the `.gitignore` file to `avoid` committing `unencrypted` Helm value files in your repository, that may contain sensitive data. Using your favorite `text editor`, paste the following (below example is using the `Starter Kit` naming convention):
+4. Finally, add the `.gitignore` file to `avoid` committing `unencrypted` Helm value files in your repository, that may contain sensitive data. Using your favorite `text editor`, paste the following:
 
     ```text
     # Ignore all YAML files containing the `-values-` string.
@@ -180,7 +176,7 @@ Please make sure that the following steps are performed in order:
     !*-sealed.yaml
     ```
 
-After finishing all the steps from this tutorial, you should have a `Git` repository structure similar to:
+After finishing all the steps in this chapter, you should have a `Git` repository structure similar to:
 
 ```text
 ├── README.md
@@ -210,5 +206,6 @@ After finishing all the steps from this tutorial, you should have a `Git` reposi
 └── pub-sealed-secrets-dev-cluster.pem
 ```
 
-### Additional Resources 
-- https://github.com/digitalocean/Kubernetes-Starter-Kit-Developers/blob/main/15-continuous-delivery-using-gitops
+### Learn More 
+- [Flux Documentation](https://fluxcd.io/docs/)
+- [GitOps and Continuous Delivery with FluxCD or ArgoCD](https://github.com/digitalocean/Kubernetes-Starter-Kit-Developers/blob/main/15-continuous-delivery-using-gitops)

@@ -1,15 +1,19 @@
 # Chapter 3 - Encrypt Kubernetes Secrets Using Sealed Secrets
 
-Next, you're going to provision the required `Flux CD` manifests for each component of the `Starter Kit`. Then, you will inspect and commit each manifest to your `Git` repository used by `Flux CD` to reconcile your `DOKS` cluster. For sensitive data, a `Kubernetes Secrets` will be created and `encrypted` using `Sealed Secrets`, and then stored in your `Git` repository as well.
+## Rationale 
+In a GitOps workflow, it can be challenging to handle sensitive data because you want to commit everything to git without revealing API keys, passwords or tokens. The [Sealed Secrets](https://github.com/bitnami-labs/sealed-secrets) project helps solve this problem. 
 
-First example will make use of the `Flux CLI` for you to accommodate and get familiarized with creating manifests via the `CLI`. Then, you will use the already prepared `manifests` provided by the `Starter Kit` repository, to speed up the steps from this tutorial.
+In this chapter, you will learn how to create manifests using the `Flux CLI`, to define the `Sealed Secrets` Helm release. Then, `Flux` will trigger the `Sealed Secrets Controller` installation process for your cluster so you can commit encrypted secrets to your Github repository and they will be decrypted 
 
-In this step, you will learn how to create manifests using the `Flux CLI`, to define the `Sealed Secrets` Helm release. Then, `Flux` will trigger the `Sealed Secrets Controller` installation process for your `DOKS` cluster.
+![](https://raw.githubusercontent.com/digitalocean/Kubernetes-Starter-Kit-Developers/main/15-continuous-delivery-using-gitops/assets/images/fluxcd_sealed_secrets.png)
 
-Please use the following steps, to create required manifests for the `Sealed Secrets` Helm release:
+### Prerequisites
+- Completion of [Chapter 2](./02-flux.md)
+- [kubeseal](https://github.com/bitnami-labs/sealed-secrets#homebrew)
 
-1. First, change directory where your `Flux CD` Git repository was cloned. Also, please check that the required directory structure for this tutorial is created, and that the `FLUXCD_HELM_MANIFESTS_PATH` environment variable is set (please refer to [Step 4 - Cloning the Flux CD Git Repository and Preparing the Layout](#step-4---cloning-the-flux-cd-git-repository-and-preparing-the-layout), for details).
-2. Then, create the `Sealed Secrets` HelmRepository manifest for `Flux`:
+## Instructions
+
+### Step 1 -  Create the `Sealed Secrets` HelmRepository manifest for `Flux`:
 
     ```shell
     flux create source helm sealed-secrets \
@@ -24,10 +28,9 @@ Please use the following steps, to create required manifests for the `Sealed Sec
     - `--interval`: Source sync interval (default `1m0s`).
     - `--export`: Export in `YAML` format to stdout.
 
-    The output looks similar to (you can notice that it has a similar structure as explained in [Using HelmRepository CRD to Define Helm Repositories](#using-helmrepository-crd-to-define-helm-repositories)):
+    The output looks similar to this:
 
     ```yaml
-    ---
     apiVersion: source.toolkit.fluxcd.io/v1beta1
     kind: HelmRepository
     metadata:
@@ -38,7 +41,9 @@ Please use the following steps, to create required manifests for the `Sealed Sec
       url: https://bitnami-labs.github.io/sealed-secrets
     ```
 
-3. Next, fetch the `Starter Kit` values file for `Sealed Secrets`. Please make sure to inspect the values file first, and replace the `<>` placeholders where needed:
+### Step 2 -  Fetch the values file for `Sealed Secrets`. 
+
+Please make sure to inspect the values file first, and replace the `<>` placeholders where needed:
 
     ```shell
     SEALED_SECRETS_CHART_VERSION="2.1.6"
@@ -46,7 +51,9 @@ Please use the following steps, to create required manifests for the `Sealed Sec
     curl "https://raw.githubusercontent.com/digitalocean/Kubernetes-Starter-Kit-Developers/main/08-kubernetes-sealed-secrets/assets/manifests/sealed-secrets-values-v${SEALED_SECRETS_CHART_VERSION}.yaml" > "sealed-secrets-values-v${SEALED_SECRETS_CHART_VERSION}.yaml"
     ```
 
-4. Now, create the `Sealed Secrets` HelmRelease manifest for `Flux CD`. `Kubeseal` CLI expects by default to find the controller in the `kube-system` namespace and to be named `sealed-secrets-controller`, hence we override the release name via the `--release-name` and `--target-namespace` flags. This is not mandatory, but `kube-system` is usually accessible only to power users (administrators):
+### Step 3 - Create the `Sealed Secrets` HelmRelease manifest for `Flux CD`. 
+
+`Kubeseal` CLI expects by default to find the controller in the `kube-system` namespace and to be named `sealed-secrets-controller`, hence we override the release name via the `--release-name` and `--target-namespace` flags. This is not mandatory, but `kube-system` is usually accessible only to power users (administrators):
 
     ```shell
     SEALED_SECRETS_CHART_VERSION="2.1.6"
@@ -73,10 +80,9 @@ Please use the following steps, to create required manifests for the `Sealed Sec
     - `--crds`: Upgrade CRDs policy, available options are: (`Skip`, `Create`, `CreateReplace`).
     - `--export`: Export in `YAML` format to stdout.
 
-    The output looks similar to (you can observe that it has a similar structure as explained in [Using HelmRelease CRD to Install Helm Charts](#using-helmrelease-crd-to-install-helm-charts)):
+    The output looks similar to this: 
 
     ```yaml
-    ---
     apiVersion: helm.toolkit.fluxcd.io/v2beta1
     kind: HelmRelease
     metadata:
@@ -102,7 +108,7 @@ Please use the following steps, to create required manifests for the `Sealed Sec
           enabled: false
     ```
 
-5. Finally, commit `Git` changes to `remote` branch:
+### Step 4 - Commit your changes and observe the reconciliation process
 
     ```shell
     SEALED_SECRETS_CHART_VERSION="2.1.6"
@@ -116,7 +122,7 @@ Please use the following steps, to create required manifests for the `Sealed Sec
     git push origin
     ```
 
-After completing the above steps, `Flux CD` will start your `DOKS` cluster `reconciliation` (in about `one minute` or so, if using the `default` interval). If you don't want to wait, you can always `force` reconciliation via:
+After completing the above steps, `Flux CD` will start your cluster reconciliation (in about `one minute` or so, if using the `default` interval). If you don't want to wait, you can always `force` reconciliation via:
 
 ```shell
 flux reconcile source git flux-system
@@ -147,9 +153,9 @@ Look for the `READY` column value - it should say `True`. Reconciliation status 
     flux logs --kind=HelmRelease
     ```
 
-### Exporting the Sealed Secrets Controller Public Key
+### Step 5 - Export the Sealed Secrets Controller Public Key
 
-To be able to `encrypt` secrets, you need the `public key` that was generated by the `Sealed Secrets Controller` when it was deployed by `Flux CD` in your `DOKS` cluster.
+To be able to `encrypt` secrets, you need the public key that was generated by the `Sealed Secrets Controller` when it was deployed by `Flux CD` in your `DOKS` cluster.
 
 First, change directory where you cloned your `Flux CD` Git repository, and do the following 
 
@@ -173,7 +179,7 @@ If for some reason the `kubeseal` certificate fetch command hangs (or you get an
   curl --retry 5 --retry-connrefused localhost:8080/v1/cert.pem > pub-sealed-secrets.pem
   ```
 
-Finally, `commit` the public key file to remote `Git` repository for later use (it's `safe` to do this, because the `public key` is useless without the `private key` which is stored in your `DOKS` cluster only). Please run bellow commands, and make sure to replace the `<>` placeholders accordingly:
+Finally, `commit` the public key file to remote `Git` repository for later use (it's safe to do this, because the `public key` is useless without the `private key` which is stored in your cluster only). Please run bellow commands, and make sure to replace the `<>` placeholders accordingly:
 
 ```shell
 git add pub-sealed-secrets.pem
@@ -187,7 +193,7 @@ git push origin
 
 **In this tutorial the `flux-system` namespace is used to hold `Kubernetes Secrets`, so please make sure that it is `restricted` to regular users/ applications via `RBAC`.**
 
-## Step 2 - Encrypting a Kubernetes Secret
+### Step 6 - Encrypt a Kubernetes Secret
 
 In this step, you will learn how to encrypt a generic `Kubernetes` secret, using `kubeseal` CLI. Then, you will deploy it to your cluster and see how the `Sealed Secrets` controller `decrypts` it for your applications to use.
 
@@ -289,9 +295,9 @@ metadata:
 type: Opaque
 ```
 
-## Step 4 - Sealed Secrets Controller Private Key Backup
+## Step 7 - (optional) Create a Sealed Secrets Controller Private Key Backup
 
-If you want to perform a `manual backup` of the private and public keys, you can do so via:
+If you want to perform a manual backup of the private and public keys, you can do so via:
 
 ```shell
 kubectl get secret -n flux-system -l sealedsecrets.bitnami.com/sealed-secrets-key -o yaml > master.key
@@ -305,7 +311,6 @@ kubectl apply -f master.key
 kubectl delete pod -n flux-system -l name=sealed-secrets-controller
 ```
 
-
 ## Security Best Practices
 
 In terms of security, `Sealed Secrets` allows you to `restrict` other users to decrypt your sealed secrets inside the cluster. There are three `scopes` that you can use (`kubeseal` CLI `--scope` flag):
@@ -314,37 +319,12 @@ In terms of security, `Sealed Secrets` allows you to `restrict` other users to d
 2. `namespace-wide`: you can freely `rename` the sealed secret within a given `namespace`.
 3. `cluster-wide`: the `secret` can be `unsealed` in any `namespace` and can be given any `name`.
 
-Next, you can apply some of the best practices highlighted below:
-
-- Make sure to change periodically **both** `secrets` (like passwords, tokens, etc), and the `private key` used for `encryption`. This way, if the `encryption key` is ever `leaked`, sensitive data doesn't get exposed. And even if it is, the secrets are not valid anymore. You can read more on the topic by referring to the [Secret Rotation](https://github.com/bitnami-labs/sealed-secrets#secret-rotation) chapter, from the official documentation.
-- You can leverage the power of `RBAC` for your `Kubernetes` cluster to `restrict` access to `namespaces`. So, if you store all your Kubernetes secrets in a `specific namespace`, then you can `restrict` access to `unwanted users` and `applications` for that `specific namespace`. This is important, because plain `Kubernetes Secrets` are `base64` encoded and can be `decoded` very easy by anyone. `Sealed Secrets` provides an `encryption` layer on top of `encoding`, but in your `DOKS` cluster sealed secrets are transformed back to `generic` Kubernetes secrets.
-- To avoid `private key leaks`, please make sure that the `namespace` where you deployed the `Sealed Secrets` controller is protected as well, via corresponding `RBAC` rules.
-
-## Conclusion
-
-In this tutorial, you learned how to use generic `Kubernetes secrets` in a `secure` way. You also learned that the `encryption key` is stored and secrets are `decrypted` in the `cluster` (the client doesn’t have access to the encryption key).
-
-Then, you discovered how to use `kubeseal` CLI, to generate `SealedSecret` manifests that hold sensitive content `encrypted`. After `applying` the sealed secrets manifest file to your `DOKS` cluster, the `Sealed Secrets Controller` will recognize it as a new sealed secret resource, and `decrypt` it to generic `Kubernetes Secret` resource.
-
-### Pros
-
-- `Lightweight`, meaning implementation and management costs are low.
-- `Transparent` integration with `Kubernetes Secrets`.
-- `Decryption` happens `server side` (DOKS cluster).
-- Works very well in a `GitOps` setup (`encrypted` files can be stored using `public Git` repositories).
-
-### Cons
-
-- For `each DOKS cluster` a separate `private` and `public key` pair needs to be `created` and `maintained`.
-- `Private keys` must be `backed` up (e.g. using `Velero`) for `disaster` recovery.
-- `Updating` and `re-sealing` secrets, as well as `adding` or `merging` new key/values is not quite straightforward.
-
-Even though there are some cons to using `Sealed Secrets`, the `ease` of `management` and `transparent` integration with `Kubernetes` and `GitOps` flows makes it a good candidate in practice.
 
 ### Learn More
+- [Bitnami Labs Sealed Secrets](https://github.com/bitnami-labs/sealed-secrets)
+- [Flux Guides: Sealed Secrets](https://fluxcd.io/docs/guides/sealed-secrets/)
+- [How to Encrypt Kubernetes Secrets Using Sealed Secrets](https://github.com/digitalocean/Kubernetes-Starter-Kit-Developers/tree/main/08-kubernetes-sealed-secrets)
 
-- [Upgrade](https://github.com/bitnami-labs/sealed-secrets#upgrade) steps and notes.
-- [Sealed Secrets FAQ](https://github.com/bitnami-labs/sealed-secrets#faq), for frequently asked questions about `Sealed Secrets`.
 
 
 
