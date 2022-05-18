@@ -3,7 +3,7 @@
 ## Rationale 
 In a GitOps workflow, it can be challenging to handle sensitive data because you want to commit everything to git without revealing API keys, passwords or tokens. The [Sealed Secrets](https://github.com/bitnami-labs/sealed-secrets) project helps solve this problem. 
 
-In this chapter, you will learn how to create manifests using the `Flux CLI`, to define the `Sealed Secrets` Helm release. Then, `Flux` will trigger the `Sealed Secrets Controller` installation process for your cluster so you can commit encrypted secrets to your Github repository and they will be decrypted 
+In this chapter, you will learn how to create manifests using the `Flux CLI`, to define the sealed secrets Helm release. Then, `Flux` will trigger the `Sealed Secrets Controller` installation process for your cluster so you can commit encrypted secrets to your Github repository and they will be decrypted 
 
 ![](https://raw.githubusercontent.com/digitalocean/Kubernetes-Starter-Kit-Developers/main/15-continuous-delivery-using-gitops/assets/images/fluxcd_sealed_secrets.png)
 
@@ -13,114 +13,114 @@ In this chapter, you will learn how to create manifests using the `Flux CLI`, to
 
 ## Instructions
 
-### Step 1 -  Create the `Sealed Secrets` HelmRepository manifest for `Flux`:
+### Step 1 -  Create the Sealed Secrets HelmRepository manifest for `Flux`:
 
-    ```shell
-    flux create source helm sealed-secrets \
-      --url="https://bitnami-labs.github.io/sealed-secrets" \
-      --interval="10m" \
-      --export > "${FLUXCD_HELM_MANIFESTS_PATH}/repositories/sealed-secrets.yaml"
-    ```
+```shell
+flux create source helm sealed-secrets \
+--url="https://bitnami-labs.github.io/sealed-secrets" \
+--interval="10m" \
+--export > "${FLUXCD_HELM_MANIFESTS_PATH}/repositories/sealed-secrets.yaml"
+```
 
-    Explanations for the above command:
+Explanations for the above command:
 
-    - `--url`: Helm repository address.
-    - `--interval`: Source sync interval (default `1m0s`).
-    - `--export`: Export in `YAML` format to stdout.
+- `--url`: Helm repository address.
+- `--interval`: Source sync interval (default `1m0s`).
+- `--export`: Export in `YAML` format to stdout.
 
-    The output looks similar to this:
+The output looks similar to this:
 
-    ```yaml
-    apiVersion: source.toolkit.fluxcd.io/v1beta1
-    kind: HelmRepository
-    metadata:
-      name: sealed-secrets
-      namespace: flux-system
-    spec:
-      interval: 10m0s
-      url: https://bitnami-labs.github.io/sealed-secrets
-    ```
+```yaml
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+name: sealed-secrets
+namespace: flux-system
+spec:
+interval: 10m0s
+url: https://bitnami-labs.github.io/sealed-secrets
+```
 
-### Step 2 -  Fetch the values file for `Sealed Secrets`. 
+### Step 2 -  Fetch the values file for Sealed Secrets. 
 
 Please make sure to inspect the values file first, and replace the `<>` placeholders where needed:
 
-    ```shell
-    SEALED_SECRETS_CHART_VERSION="2.1.6"
+```shell
+SEALED_SECRETS_CHART_VERSION="2.1.6"
 
-    curl "https://raw.githubusercontent.com/digitalocean/Kubernetes-Starter-Kit-Developers/main/08-kubernetes-sealed-secrets/assets/manifests/sealed-secrets-values-v${SEALED_SECRETS_CHART_VERSION}.yaml" > "sealed-secrets-values-v${SEALED_SECRETS_CHART_VERSION}.yaml"
-    ```
+curl "https://raw.githubusercontent.com/digitalocean/Kubernetes-Starter-Kit-Developers/main/08-kubernetes-sealed-secrets/assets/manifests/sealed-secrets-values-v${SEALED_SECRETS_CHART_VERSION}.yaml" > "sealed-secrets-values-v${SEALED_SECRETS_CHART_VERSION}.yaml"
+```
 
-### Step 3 - Create the `Sealed Secrets` HelmRelease manifest for `Flux CD`. 
+### Step 3 - Create the Sealed Secrets HelmRelease manifest for `Flux CD`. 
 
 `Kubeseal` CLI expects by default to find the controller in the `kube-system` namespace and to be named `sealed-secrets-controller`, hence we override the release name via the `--release-name` and `--target-namespace` flags. This is not mandatory, but `kube-system` is usually accessible only to power users (administrators):
 
-    ```shell
-    SEALED_SECRETS_CHART_VERSION="2.1.6"
+  ```shell
+  SEALED_SECRETS_CHART_VERSION="2.1.6"
 
-    flux create helmrelease "sealed-secrets-controller" \
-      --release-name="sealed-secrets-controller" \
-      --source="HelmRepository/sealed-secrets" \
-      --chart="sealed-secrets" \
-      --chart-version "$SEALED_SECRETS_CHART_VERSION" \
-      --values="sealed-secrets-values-v${SEALED_SECRETS_CHART_VERSION}.yaml" \
-      --target-namespace="flux-system" \
-      --crds=CreateReplace \
-      --export > "${FLUXCD_HELM_MANIFESTS_PATH}/releases/sealed-secrets-v${SEALED_SECRETS_CHART_VERSION}.yaml"
-    ```
+  flux create helmrelease "sealed-secrets-controller" \
+    --release-name="sealed-secrets-controller" \
+    --source="HelmRepository/sealed-secrets" \
+    --chart="sealed-secrets" \
+    --chart-version "$SEALED_SECRETS_CHART_VERSION" \
+    --values="sealed-secrets-values-v${SEALED_SECRETS_CHART_VERSION}.yaml" \
+    --target-namespace="flux-system" \
+    --crds=CreateReplace \
+    --export > "${FLUXCD_HELM_MANIFESTS_PATH}/releases/sealed-secrets-v${SEALED_SECRETS_CHART_VERSION}.yaml"
+  ```
 
-    Explanations for the above command:
+  Explanations for the above command:
 
-    - `--release-name`: What name to use for the Helm release (defaults to `<target-namespace>-<HelmRelease-name>` otherwise).
-    - `--source`: Source that contains the chart in the format `<kind>/<name>.<namespace>`, where kind must be one of: (`HelmRepository`, `GitRepository`, `Bucket`).
-    - `--chart`: Helm chart name.
-    - `--chart-version`: Helm chart version.
-    - `--values`: Local path to values file.
-    - `--target-namespace`: Namespace to install this release.
-    - `--crds`: Upgrade CRDs policy, available options are: (`Skip`, `Create`, `CreateReplace`).
-    - `--export`: Export in `YAML` format to stdout.
+  - `--release-name`: What name to use for the Helm release (defaults to `<target-namespace>-<HelmRelease-name>` otherwise).
+  - `--source`: Source that contains the chart in the format `<kind>/<name>.<namespace>`, where kind must be one of: (`HelmRepository`, `GitRepository`, `Bucket`).
+  - `--chart`: Helm chart name.
+  - `--chart-version`: Helm chart version.
+  - `--values`: Local path to values file.
+  - `--target-namespace`: Namespace to install this release.
+  - `--crds`: Upgrade CRDs policy, available options are: (`Skip`, `Create`, `CreateReplace`).
+  - `--export`: Export in `YAML` format to stdout.
 
-    The output looks similar to this: 
+  The output looks similar to this: 
 
-    ```yaml
-    apiVersion: helm.toolkit.fluxcd.io/v2beta1
-    kind: HelmRelease
-    metadata:
-      name: sealed-secrets-controller
-      namespace: flux-system
-    spec:
-      chart:
-        spec:
-          chart: sealed-secrets
-          sourceRef:
-            kind: HelmRepository
-            name: sealed-secrets
-          version: 2.1.6
-      interval: 1m0s
-      releaseName: sealed-secrets-controller
-      targetNamespace: flux-system
-      install:
-        crds: Create
-      upgrade:
-        crds: CreateReplace
-      values:
-        ingress:
-          enabled: false
-    ```
+  ```yaml
+  apiVersion: helm.toolkit.fluxcd.io/v2beta1
+  kind: HelmRelease
+  metadata:
+    name: sealed-secrets-controller
+    namespace: flux-system
+  spec:
+    chart:
+      spec:
+        chart: sealed-secrets
+        sourceRef:
+          kind: HelmRepository
+          name: sealed-secrets
+        version: 2.1.6
+    interval: 1m0s
+    releaseName: sealed-secrets-controller
+    targetNamespace: flux-system
+    install:
+      crds: Create
+    upgrade:
+      crds: CreateReplace
+    values:
+      ingress:
+        enabled: false
+  ```
 
 ### Step 4 - Commit your changes and observe the reconciliation process
 
-    ```shell
-    SEALED_SECRETS_CHART_VERSION="2.1.6"
+  ```shell
+  SEALED_SECRETS_CHART_VERSION="2.1.6"
 
-    git add "${FLUXCD_HELM_MANIFESTS_PATH}/repositories/sealed-secrets.yaml"
+  git add "${FLUXCD_HELM_MANIFESTS_PATH}/repositories/sealed-secrets.yaml"
 
-    git add "${FLUXCD_HELM_MANIFESTS_PATH}/releases/sealed-secrets-v${SEALED_SECRETS_CHART_VERSION}.yaml"
+  git add "${FLUXCD_HELM_MANIFESTS_PATH}/releases/sealed-secrets-v${SEALED_SECRETS_CHART_VERSION}.yaml"
 
-    git commit -am "Adding Sealed Secrets manifests for Flux CD"
+  git commit -am "Adding Sealed Secrets manifests for Flux CD"
 
-    git push origin
-    ```
+  git push origin
+  ```
 
 After completing the above steps, `Flux CD` will start your cluster reconciliation (in about `one minute` or so, if using the `default` interval). If you don't want to wait, you can always `force` reconciliation via:
 
@@ -128,12 +128,12 @@ After completing the above steps, `Flux CD` will start your cluster reconciliati
 flux reconcile source git flux-system
 ```
 
-After a few moments, please inspect the Flux CD `Sealed Secrets` Helm release:
+After a few moments, please inspect the Flux CD sealed secrets Helm release:
 
 ```shell
 flux get helmrelease sealed-secrets-controller
 ```
-  
+
 The output looks similar to:
 
 ```text
@@ -149,9 +149,9 @@ Look for the `READY` column value - it should say `True`. Reconciliation status 
 - You can use the `--watch` flag for example: `flux get helmrelease <name> --wait`, to wait until the command finishes. Please bear in mind that in this mode, `Flux` will block your terminal prompt until the default timeout of `5 minutes` occurs (can be overridden via the `--timeout` flag).
 - In case something goes wrong, you can search the `Flux` logs, and filter `HelmRelease` messages only:
 
-    ```shell
-    flux logs --kind=HelmRelease
-    ```
+```shell
+flux logs --kind=HelmRelease
+```
 
 ### Step 5 - Export the Sealed Secrets Controller Public Key
 
@@ -169,15 +169,15 @@ If for some reason the `kubeseal` certificate fetch command hangs (or you get an
 
 - First, open a new terminal window, and `expose` the `Sealed Secrets Controller` service on your `localhost` (you can use `CTRL - C` to terminate, after fetching the public key):
 
-  ```shell
-  kubectl port-forward service/sealed-secrets-controller 8080:8080 -n flux-system 
-  ```
+```shell
+kubectl port-forward service/sealed-secrets-controller 8080:8080 -n flux-system 
+```
 
 - Then, you can go back to your working terminal and fetch the public key
 
-  ```shell
-  curl --retry 5 --retry-connrefused localhost:8080/v1/cert.pem > pub-sealed-secrets.pem
-  ```
+```shell
+curl --retry 5 --retry-connrefused localhost:8080/v1/cert.pem > pub-sealed-secrets.pem
+```
 
 Finally, `commit` the public key file to remote `Git` repository for later use (it's safe to do this, because the `public key` is useless without the `private key` which is stored in your cluster only). Please run bellow commands, and make sure to replace the `<>` placeholders accordingly:
 
@@ -195,27 +195,27 @@ git push origin
 
 ### Step 6 - Encrypt a Kubernetes Secret
 
-In this step, you will learn how to encrypt a generic `Kubernetes` secret, using `kubeseal` CLI. Then, you will deploy it to your cluster and see how the `Sealed Secrets` controller `decrypts` it for your applications to use.
+In this step, you will learn how to encrypt a generic `Kubernetes` secret, using `kubeseal` CLI. Then, you will deploy it to your cluster and see how the sealed secrets controller `decrypts` it for your applications to use.
 
 Suppose that you need to seal a generic secret for your application, saved in the following file: `your-app-secret.yaml`. Notice the `your-data` field which is `base64` encoded (it's `vulnerable` to attacks, because it can be very easily `decoded` using free tools):
 
 ```yaml
 apiVersion: v1
 data:
-  your-data: ZXh0cmFFbnZWYXJzOgogICAgRElHSVRBTE9DRUFOX1RPS0VOOg== # base64 encoded application data
+your-data: ZXh0cmFFbnZWYXJzOgogICAgRElHSVRBTE9DRUFOX1RPS0VOOg== # base64 encoded application data
 kind: Secret
 metadata:
-  name: your-app
+name: your-app
 ```
 
 Next, create a `sealed` file from the `Kubernetes` secret, using the `pub-sealed-secrets.pem` key:
 
 ```shell
 kubeseal --format=yaml \
-  --namespace=flux-system \
-  --cert=pub-sealed-secrets.pem \
-  --secret-file your-app-secret.yaml \
-  --sealed-secret-file your-app-sealed.yaml
+--namespace=flux-system \
+--cert=pub-sealed-secrets.pem \
+--secret-file your-app-secret.yaml \
+--sealed-secret-file your-app-sealed.yaml
 ```
 
 The new file defines a SealedSecret CRD:
@@ -224,18 +224,18 @@ The new file defines a SealedSecret CRD:
 apiVersion: bitnami.com/v1alpha1
 kind: SealedSecret
 metadata:
-  creationTimestamp: null
-  name: your-app
-  namespace: flux-system
+creationTimestamp: null
+name: your-app
+namespace: flux-system
 spec:
-  encryptedData:
-    your-data: AgCFNTLd+KD2IGZo3YWbRgPsK1dEhxT3NwSCU2Inl8A6phhTwMxKSu82fu0LGf/AoYCB35xrdPl0sCwwB4HSXRZMl2WbL6HrA0DQNB1ov8DnnAVM+6TZFCKePkf9yqVIekr4VojhPYAvkXq8TEAxYslQ0ppNg6AlduUZbcfZgSDkMUBfaczjwb69BV8kBf5YXMRmfGtL3mh5CZA6AAK0Q9cFwT/gWEZQU7M1BOoMXUJrHG9p6hboqzyEIWg535j+14tNy1srAx6oaQeEKOW9fr7C6IZr8VOe2wRtHFWZGjCL3ulzFeNu5GG0FmFm/bdB7rFYUnUIrb2RShi1xvyNpaNDF+1BDuZgpyDPVO8crCc+r2ozDnkTo/sJhNdLDuYgIzoQU7g1yP4U6gYDTE+1zUK/b1Q+X2eTFwHQoli/IRSv5eP/EAVTU60QJklwza8qfHE9UjpsxgcrZnaxdXZz90NahoGPtdJkweoPd0/CIoaugx4QxbxaZ67nBgsVYAnikqc9pVs9VmX/Si24aA6oZbtmGzkc4b80yi+9ln7x/7/B0XmyLNLS2Sz0lnqVUN8sfvjmehpEBDjdErekSlQJ4xWEQQ9agdxz7WCSCgPJVnwA6B3GsnL5dleMObk7eGUj9DNMv4ETrvx/ZaS4bpjwS2TL9S5n9a6vx6my3VC3tLA5QAW+GBIfRD7/CwyGZnTJHtW5f6jlDWYS62LbFJKfI9hb8foR/XLvBhgxuiwfj7SjjAzpyAgq
-  template:
-    data: null
-    metadata:
-      creationTimestamp: null
-      name: your-app
-      namespace: default
+encryptedData:
+  your-data: AgCFNTLd+KD2IGZo3YWbRgPsK1dEhxT3NwSCU2Inl8A6phhTwMxKSu82fu0LGf/AoYCB35xrdPl0sCwwB4HSXRZMl2WbL6HrA0DQNB1ov8DnnAVM+6TZFCKePkf9yqVIekr4VojhPYAvkXq8TEAxYslQ0ppNg6AlduUZbcfZgSDkMUBfaczjwb69BV8kBf5YXMRmfGtL3mh5CZA6AAK0Q9cFwT/gWEZQU7M1BOoMXUJrHG9p6hboqzyEIWg535j+14tNy1srAx6oaQeEKOW9fr7C6IZr8VOe2wRtHFWZGjCL3ulzFeNu5GG0FmFm/bdB7rFYUnUIrb2RShi1xvyNpaNDF+1BDuZgpyDPVO8crCc+r2ozDnkTo/sJhNdLDuYgIzoQU7g1yP4U6gYDTE+1zUK/b1Q+X2eTFwHQoli/IRSv5eP/EAVTU60QJklwza8qfHE9UjpsxgcrZnaxdXZz90NahoGPtdJkweoPd0/CIoaugx4QxbxaZ67nBgsVYAnikqc9pVs9VmX/Si24aA6oZbtmGzkc4b80yi+9ln7x/7/B0XmyLNLS2Sz0lnqVUN8sfvjmehpEBDjdErekSlQJ4xWEQQ9agdxz7WCSCgPJVnwA6B3GsnL5dleMObk7eGUj9DNMv4ETrvx/ZaS4bpjwS2TL9S5n9a6vx6my3VC3tLA5QAW+GBIfRD7/CwyGZnTJHtW5f6jlDWYS62LbFJKfI9hb8foR/XLvBhgxuiwfj7SjjAzpyAgq
+template:
+  data: null
+  metadata:
+    creationTimestamp: null
+    name: your-app
+    namespace: default
 ```
 
 **Note:**
@@ -278,20 +278,20 @@ The output looks similar to (`your-data` key `value` should be `decrypted` to th
 ```yaml
 apiVersion: v1
 data:
-  your-data: ZXh0cmFFbnZWYXJzOgogICAgRElHSVRBTE9DRUFOX1RPS0VOOg==
+your-data: ZXh0cmFFbnZWYXJzOgogICAgRElHSVRBTE9DRUFOX1RPS0VOOg==
 kind: Secret
 metadata:
-  creationTimestamp: "2021-10-05T08:34:07Z"
+creationTimestamp: "2021-10-05T08:34:07Z"
+name: your-app
+namespace: flux-system
+ownerReferences:
+- apiVersion: bitnami.com/v1alpha1
+  controller: true
+  kind: SealedSecret
   name: your-app
-  namespace: flux-system
-  ownerReferences:
-  - apiVersion: bitnami.com/v1alpha1
-    controller: true
-    kind: SealedSecret
-    name: your-app
-    uid: f6475e74-78eb-4c6a-9f19-9d9ceee231d0
-  resourceVersion: "235947"
-  uid: 7b7d2fee-c48a-4b4c-8f16-2e58d25da804
+  uid: f6475e74-78eb-4c6a-9f19-9d9ceee231d0
+resourceVersion: "235947"
+uid: 7b7d2fee-c48a-4b4c-8f16-2e58d25da804
 type: Opaque
 ```
 
@@ -313,7 +313,7 @@ kubectl delete pod -n flux-system -l name=sealed-secrets-controller
 
 ## Security Best Practices
 
-In terms of security, `Sealed Secrets` allows you to `restrict` other users to decrypt your sealed secrets inside the cluster. There are three `scopes` that you can use (`kubeseal` CLI `--scope` flag):
+In terms of security, sealed secrets allows you to `restrict` other users to decrypt your sealed secrets inside the cluster. There are three `scopes` that you can use (`kubeseal` CLI `--scope` flag):
 
 1. `strict` (default): the secret must be sealed with `exactly` the same `name` and `namespace`. These `attributes` become `part` of the `encrypted data` and thus `changing name` and/or `namespace` would lead to **"decryption error"**.
 2. `namespace-wide`: you can freely `rename` the sealed secret within a given `namespace`.
@@ -329,4 +329,3 @@ In terms of security, `Sealed Secrets` allows you to `restrict` other users to d
 
 
 
- 

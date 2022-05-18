@@ -7,7 +7,7 @@ metadata:
 spec:
   forProvider:
     region: ams3
-    size: s-1vcpu-1gb
+    size: s-1vcpu-1gb 
     image: ubuntu-20-04-x64
   providerConfigRef:
     name: do-example

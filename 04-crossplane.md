@@ -137,4 +137,5 @@ Following the instructions from the provider's documentation, configure the Secr
 Choose a new resource to create. Once you are done, celebrate because you have setup multi-cloud infrastruction with Crossplane! 🎉
 
 ### Learn More
+- [Crossplane](https://crossplane.io/)
 - [Announcing the DigitalOcean Crossplane Provider](https://www.digitalocean.com/blog/announcing-the-digitalocean-crossplane-provider)

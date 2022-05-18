@@ -20,7 +20,9 @@ cd terraform && terraform destroy -var do_token=$DO_TOKEN
 
 Look in the Cloud Console and double check that the cluster is being terminated. 
 
-### Step 2 - Celebrate, You're Done! 
+### Step 2 - Destroy your Droplet and any other cloud resources you created with Crossplane 
+
+### Step 3 - Celebrate, You're Done! 
 
 ![](https://media.giphy.com/media/TgI82cyv2haUubdAzK/giphy.gif)
 
