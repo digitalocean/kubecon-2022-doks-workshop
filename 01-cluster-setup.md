@@ -34,32 +34,33 @@ To clone with HTTPS:
 ```
 git clone https://github.com/digitalocean/kubecon-2022-doks-workshop.git
 cd kubecon-2022-doks-workshop
-
 ```
 
 ### Step 2 - Configure `doctl` 
-1. [Create an API token](https://docs.digitalocean.com/reference/doctl/how-to/install/#step-2-create-an-api-token)
-1. Export your token as an environment variable called `DO_TOKEN`.
+1. [Create an API token](https://cloud.digitalocean.com/account/api/)
+2. Export your token as an environment variable called `DO_TOKEN`.
 ```sh
 export DO_TOKEN="<YOUR_DO_TOKEN>"
 ```
-1. Make sure your token is copied to your clipboard 
-```sh
-echo $DO_TOKEN
-```
-1. [Use the API token to grant account access to doctl](https://docs.digitalocean.com/reference/doctl/how-to/install/#step-3-use-the-api-token-to-grant-account-access-to-doctl)
+
+**Note:** Since Windows doesn't support enviornment variables, Windows users should keep the token on their clipboard to easily paste.
+
+3. [Use the API token to grant account access to doctl](https://docs.digitalocean.com/reference/doctl/how-to/install/#step-3-use-the-api-token-to-grant-account-access-to-doctl)
 ```sh
 doctl auth init 
 ```
-1. [Validate that doctl is working](https://docs.digitalocean.com/reference/doctl/how-to/install/#step-4-validate-that-doctl-is-working)
+4. [Validate that doctl is working](https://docs.digitalocean.com/reference/doctl/how-to/install/#step-4-validate-that-doctl-is-working)
 ```sh
 doctl account get
 ```
 
-Note: Since Windows doesn't support enviornment variables, windows users keep the token on their clipboard to easily paste. 
+You should see output like this: 
 
+```sh
+Email                            Droplet Limit    Email Verified    UUID                                    Status
+kschlesinger@digitalocean.com    25               true              4ba4b281-ie98-4888-a843-2365cf961232    active
+```
 
-!!! mention that we'll go through the file once we've applied
 ### Step 4 -  Update the [doks.tf](./terraform/doks.tf) file
 
 Look for the comments and check the following: 
@@ -116,6 +117,11 @@ If the apply is successful, it will take a 4-5 minutes for your cluster to provi
 
 To see the status of your cluster, go to the [DigitalOcean Cloud Console](https://cloud.digitalocean.com/) and click on the Kubernetes Tab. You will see a progress bar indicating whether or not your cluster is fully provisioned. When your cluster is ready, Terraform will also send you a success message in the terminal. 
 
+```sh
+
+
+```
+
 ### Step 7 - Add an authentication token or certificate to your `kubectl` configuration file to connect
 
 Once your cluster is ready, download a kubeconfig file with your authentication data. 
@@ -143,12 +149,4 @@ kubecon-node-cbu7a     Ready    <none>   1m     v1.22.8
 kubecon-node-cbu7e     Ready    <none>   1m     v1.22.8
 ``` 
 
-Congratulations! You have created a Kubernetes Cluster with Terraform. Now you are ready to go on to Chapter 2, 3 or 4. 
- 
-### Additional Resources 
-
-
-### To Do
-- Add instructions for how to spin up a KIND cluster using Terraform 
-    - https://registry.terraform.io/providers/unicell/kind/latest/docs/resources/cluster
-
+Congratulations! You have created a Kubernetes Cluster with Terraform.
