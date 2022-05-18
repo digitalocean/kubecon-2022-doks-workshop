@@ -11,7 +11,7 @@ In this chapter we will install Crossplane in our cluster and create a DigitalOc
 !!! lucid chart showing a provider, secret and provider config 
 
 ### Prerequisites
-- [Crossplane CLI](https://crossplane.github.io/docs/v1.7/getting-started/install-configure.html#install-crossplane-cli)
+- n/a
 
 ## Instructions 
 
@@ -58,7 +58,7 @@ provider-do    True        True      crossplane/provider-digitalocean:v0.1.0  3m
 
 ```
 
-### Step 2 - Configure the Secret and Create the ConfigProvider
+### Step 3 - Configure the Secret and Create the ConfigProvider
 
 Reveal the value of your `DO_TOKEN` and copy it to your clipboard. 
 
@@ -75,7 +75,7 @@ echo '<YOUR_DO_TOKEN>' | base64
 ```
 
 **Windows** 
-Use a tool you have used in the pass, or go to [DuckDuckGo](https://duckduckgo.com/) and enter `base64 <YOUR_DO_TOKEN>`. The encoded string will appear at the top of the page. 
+Use a tool you have used in the past, or go to [DuckDuckGo](https://duckduckgo.com/) and enter `base64 <YOUR_DO_TOKEN>`. The encoded string will appear at the top of the page. 
 
 Copy the encoded token to your clipboard, and then replace the place holder (`BASE64ENCODED_PROVIDER_CREDS`) in line 9 of the [config.yaml](./crossplane/config.yaml) with your encoded token. 
 
@@ -99,7 +99,7 @@ You should see output like this:
 NAME         AGE
 do-example   2m
 ```
-### Step 3 - Create a DigitalOcean Droplet from your cluster
+### Step 4 - Create a DigitalOcean Droplet from your cluster
 
 Inspect the [droplet.yaml](./crossplane/droplet.yaml) file and then create the droplet
 
@@ -127,7 +127,7 @@ crossplane-droplet
 
 Take a look at Crossplane's [official list of providers](https://crossplane.io/docs/v1.7/concepts/providers.html). Choose one that you'd like to explore. We recommend that choose a provider that you are already familiar with and you've got an account with so it's easy to generate credentials. 
 
-### Step 5 - Install the Provider 
+### Step 6 - Install the Provider 
 
 Following the instructions from the provider's documentation, install the provider.
 
@@ -136,8 +136,7 @@ Following the instructions from the provider's documentation, install the provid
 
 Following the instructions from the provider's documentation, configure the Secret and create the provider config.
 
-
-### Step 5 - Create a new resource 
+### Step 8 - Create a new resource 
 
 Choose a new resource to create. Once you are done, celebrate because you have setup multi-cloud infrastruction with Crossplane! 🎉
 

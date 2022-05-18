@@ -19,7 +19,6 @@ Documentation](https://kubernetes.io/docs/concepts/overview/components/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/)
 
 ## Instructions 
-
 ### Step 1 - Clone and change into the workshop repository 
 
 !!! fix the broken link 

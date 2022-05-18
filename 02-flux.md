@@ -19,7 +19,6 @@ In this chapter, you will use Helm to install FluxCD which will synchronize with
 ![image](https://raw.githubusercontent.com/digitalocean/Kubernetes-Starter-Kit-Developers/main/15-continuous-delivery-using-gitops/assets/images/fluxcd_overview.png)
 
 
-
 ### Prerequisites
 - [A Github account](https://github.com/signup)
 - [Flux CLI](https://fluxcd.io/docs/installation/#install-the-flux-cli)
@@ -69,7 +68,7 @@ The output looks similar to the following:
 
 ```text
 ► checking prerequisites
-✔ Kubernetes 1.21.9 >=1.20.6-0
+✔ Kubernetes 1.22.8 >=1.20.6-0
 ► checking controllers
 ✔ helm-controller: deployment ready
 ► ghcr.io/fluxcd/helm-controller:v0.17.2
