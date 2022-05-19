@@ -14,7 +14,8 @@ The goal of this [session](https://kccnceu2022.sched.com/event/yto4/gitops-to-au
 ### Promo Code 
 In this workshop, you will spin up a [DigitalOcean Managed Kubernetes Cluster](https://www.digitalocean.com/products/kubernetes). You will get a $100 credit for this workshop, and in order to [redeem the credit](https://docs.digitalocean.com/products/billing/promo-codes/), you will need a DigitalOcean Account. 
 
-Once you are logged into your DigitalOcean account, go to the billing page, find the promo code section and enter the code `KIM@KCEU100`.
+Once you are logged into your DigitalOcean account, go to the billing page, find the promo code section and enter the code `KubeconEU22` 
+^ This promo code has been updated since the live workshop. 
 
 **Note:**  
 If you have an existing DigitalOcean account that has already used a promo code, we will have to manually add the credits to your account. There are two ways to handle this at the session: 
@@ -48,7 +49,7 @@ If you get stuck during the workshop, please try the following things in order:
 
 1. Reread the instructions and try the last command again
 1. Google the error
-1. If you are at the conference in-person, ask for help from someone sitting near you, or go to the back where a teaching assitant can help you
+1. If you are at the conference in-person, ask for help from someone sitting near you, or go to the back where a teaching assistant can help you
 1. Ask for help in the `#2-kubecon-custom-extendk8s` Slack channel
 
 ### Learn More
