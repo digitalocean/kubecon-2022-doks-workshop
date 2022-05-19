@@ -20,19 +20,20 @@ Documentation](https://kubernetes.io/docs/concepts/overview/components/)
 
 ## Instructions 
 ### Step 1 - Clone and change into the workshop repository 
+ 
+Go to Github and fork clone the [KubeCon EU 2022 Workshop Repo](https://github.com/digitalocean/kubecon-2022-doks-workshop/) and then change into the directory. 
 
-!!! fix the broken link 
-Go to Github and clone the [KubeCon EU 2022 Workshop Repo](https://github.com/digitalocean/kubecon-2022-doks-workshop/) and then change into the directory. 
+**Note** Make sure to update the command with your github username.
 
 To clone with SSH: 
 ```sh
-git clone git@github.com:digitalocean/kubecon-2022-doks-workshop.git
+git clone git@github.com:<GITHUB_USERNAME>/kubecon-2022-doks-workshop.git
 cd kubecon-2022-doks-workshop
 ```
 
 To clone with HTTPS: 
 ```
-git clone https://github.com/digitalocean/kubecon-2022-doks-workshop.git
+git clone https://github.com/<GITHUB_USERNAME>/kubecon-2022-doks-workshop.git
 cd kubecon-2022-doks-workshop
 ```
 
@@ -152,3 +153,4 @@ Congratulations! You have created a Kubernetes Cluster with Terraform.
 
 ### Learn More
 - [Hashicorp Learn: Terraform](https://learn.hashicorp.com/terraform)
+- [DigitalOcean Terraform Provider](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs/resources/kubernetes_cluster)
