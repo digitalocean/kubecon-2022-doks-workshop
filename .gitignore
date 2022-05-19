@@ -10,9 +10,18 @@
 # Directories
 .terraform/
 
-
 # Ignored Terraform files
 *gitignore*.tf
 
+# Ignore all YAML files containing the `-values-` string.
+*-values-*.yaml
+
+# Do not ignore sealed YAML files.
+!*-sealed.yaml
+
 # Ignored vscode files
 .vscode/
+
+# Ignore asciinema recordings
+*.cast
+

@@ -2,13 +2,13 @@
 
 ## Rationale 
 
-`GitOps` is  a set of practices that focuses around the main idea of having `Git` as the single source of truth. It means, you keep all your Kubernetes configuration manifests stored in a `Git` repository. Then, a GitOps tool (such as [Flux CD](https://fluxcd.io) or [Argo CD](https://argoproj.github.io/cd/)) fetches current configuration from the Git repository, and applies required changes to your Kubernetes cluster to maintain desired state.
+`GitOps` is  a set of practices that focuses around the main idea of having `Git` as the single source of truth. It means you keep all your Kubernetes configuration manifests stored in a `Git` repository. Then, a GitOps tool (such as [Flux CD](https://fluxcd.io) or [Argo CD](https://argoproj.github.io/cd/)) fetches current configuration from the Git repository, and applies required changes to your Kubernetes cluster to maintain desired state.
 
-The GitOps tool continuously watches the current system state (your Kubernetes cluster) and Git repository state. If there's a difference (or deviation) between the two, it will take the appropriate actions to match Git repository state. It means, whenever someone applies manual changes (via `kubectl`) those will be overwritten, and your Kubernetes applications state reverted to reflect current configuration from Git repository. In other words, the Git repository always wins, hence the statement - Git as the single source of truth. This approach has a tremendous advantage, because it eliminates all issues due to manual system changes which cannot be tracked or audited.
+The GitOps tool continuously watches the current system state (your Kubernetes cluster) and Git repository state. If there's a difference (or deviation) between the two, it will take the appropriate actions to match Git repository state. It means, whenever someone applies manual changes (via `kubectl`) those will be overwritten, and your Kubernetes applications state reverted to reflect current configuration from Git repository. In other words, the Git repository always wins, hence the statement - Git as the single source of truth. This approach has a tremendous advantage, because it eliminates issues due to manual system changes which cannot be tracked or audited.
 
 Flux CD helps you synchronize the state of your infrastructure using Git as the source of truth, thus following GitOps principles. Flux also helps you implement continuous delivery for your applications. It knows how to handle Helm releases as well, thus you can control application deployment and lifecycle via the standard package manager for Kubernetes.
 
-The process of synchronizing your DOKS cluster state with a Git repository, is called reconciliation. Reconciliation makes sure that your applications state match a desired state declaratively defined somewhere (can be a Git repository, Helm repository or a S3 bucket).
+The process of synchronizing your cluster state with a Git repositor is called reconciliation. Reconciliation makes sure that your applications state match a desired state declaratively defined somewhere (can be a Git repository, Helm repository or a S3 bucket).
 
 In this chapter, you will use Helm to install FluxCD which will synchronize with a Github repo. 
 
@@ -175,36 +175,6 @@ Please make sure that the following steps are performed in order:
     # Do not ignore sealed YAML files.
     !*-sealed.yaml
     ```
-
-After finishing all the steps in this chapter, you should have a `Git` repository structure similar to:
-
-```text
-├── README.md
-├── clusters
-│   └── dev
-│       ├── flux-system
-│       │   ├── gotk-components.yaml
-│       │   ├── gotk-sync.yaml
-│       │   └── kustomization.yaml
-│       └── helm
-│           ├── releases
-│           │   ├── ambassador-stack-v7.2.2.yaml
-│           │   ├── loki-stack-v2.5.1.yaml
-│           │   ├── prometheus-stack-v30.0.1.yaml
-│           │   ├── sealed-secrets-v2.1.6.yaml
-│           │   └── velero-v2.27.3.yaml
-│           ├── repositories
-│           │   ├── ambassador.yaml
-│           │   ├── grafana.yaml
-│           │   ├── prometheus-community.yaml
-│           │   ├── sealed-secrets.yaml
-│           │   └── vmware-tanzu.yaml
-│           └── secrets
-│               ├── do-api-credentials-sealed.yaml
-│               ├── do-spaces-credentials-sealed.yaml
-│               └── prometheus-stack-credentials-sealed.yaml
-└── pub-sealed-secrets-dev-cluster.pem
-```
 
 ### Learn More 
 - [Flux Documentation](https://fluxcd.io/docs/)

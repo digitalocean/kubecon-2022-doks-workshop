@@ -15,6 +15,18 @@ In this chapter, you will learn how to create manifests using the `Flux CLI`, to
 
 ### Step 1 -  Create the Sealed Secrets HelmRepository manifest for `Flux`:
 
+First, change directory where your Flux CD Git repository was cloned. Also, please check that the required directory structure for this tutorial is created, and that the `FLUXCD_HELM_MANIFESTS_PATH` environment variable is set.
+
+Create a new helm, releases and directories path with the command 
+
+```shell
+mkdir clusters/dev/helm \
+mkdir clusters/dev/helm/releases \
+mkdir clusters/dev/helm/repositories 
+```
+
+Now, use Flux to create the Sealed Secrets `HelmRepository` resource
+
 ```shell
 flux create source helm sealed-secrets \
 --url="https://bitnami-labs.github.io/sealed-secrets" \
@@ -31,6 +43,7 @@ Explanations for the above command:
 The output looks similar to this:
 
 ```yaml
+---
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
