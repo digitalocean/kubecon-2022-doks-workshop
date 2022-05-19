@@ -100,7 +100,7 @@ do-example   2m
 Inspect the [droplet.yaml](./crossplane/droplet.yaml) file and then create the droplet
 
 ```sh
-k apply -f crossplane/droplet.yaml
+kubectl apply -f crossplane/droplet.yaml
 ```
 
 Check that a droplet was created by looking at the DigitalOcean Cloud Console or run the command 
