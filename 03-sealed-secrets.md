@@ -17,14 +17,6 @@ In this chapter, you will learn how to create manifests using the `Flux CLI`, to
 
 First, change directory where your Flux CD Git repository was cloned. Also, please check that the required directory structure for this tutorial is created, and that the `FLUXCD_HELM_MANIFESTS_PATH` environment variable is set.
 
-Create a new helm, releases and directories path with the command 
-
-```shell
-mkdir clusters/dev/helm \
-mkdir clusters/dev/helm/releases \
-mkdir clusters/dev/helm/repositories 
-```
-
 Now, use Flux to create the Sealed Secrets `HelmRepository` resource
 
 ```shell
@@ -214,11 +206,13 @@ Suppose that you need to seal a generic secret for your application, saved in th
 
 ```yaml
 apiVersion: v1
-data:
-your-data: ZXh0cmFFbnZWYXJzOgogICAgRElHSVRBTE9DRUFOX1RPS0VOOg== # base64 encoded application data
 kind: Secret
 metadata:
-name: your-app
+  name: your-app
+data:
+  your-data: ZXh0cmFFbnZWYXJzOgogICAgRElHSVRBTE9DRUFOX1RPS0VOOg== # base64 encoded application data
+
+
 ```
 
 Next, create a `sealed` file from the `Kubernetes` secret, using the `pub-sealed-secrets.pem` key:
@@ -237,18 +231,18 @@ The new file defines a SealedSecret CRD:
 apiVersion: bitnami.com/v1alpha1
 kind: SealedSecret
 metadata:
-creationTimestamp: null
-name: your-app
-namespace: flux-system
+  creationTimestamp: null
+  name: your-app
+  namespace: flux-system
 spec:
-encryptedData:
-  your-data: AgCFNTLd+KD2IGZo3YWbRgPsK1dEhxT3NwSCU2Inl8A6phhTwMxKSu82fu0LGf/AoYCB35xrdPl0sCwwB4HSXRZMl2WbL6HrA0DQNB1ov8DnnAVM+6TZFCKePkf9yqVIekr4VojhPYAvkXq8TEAxYslQ0ppNg6AlduUZbcfZgSDkMUBfaczjwb69BV8kBf5YXMRmfGtL3mh5CZA6AAK0Q9cFwT/gWEZQU7M1BOoMXUJrHG9p6hboqzyEIWg535j+14tNy1srAx6oaQeEKOW9fr7C6IZr8VOe2wRtHFWZGjCL3ulzFeNu5GG0FmFm/bdB7rFYUnUIrb2RShi1xvyNpaNDF+1BDuZgpyDPVO8crCc+r2ozDnkTo/sJhNdLDuYgIzoQU7g1yP4U6gYDTE+1zUK/b1Q+X2eTFwHQoli/IRSv5eP/EAVTU60QJklwza8qfHE9UjpsxgcrZnaxdXZz90NahoGPtdJkweoPd0/CIoaugx4QxbxaZ67nBgsVYAnikqc9pVs9VmX/Si24aA6oZbtmGzkc4b80yi+9ln7x/7/B0XmyLNLS2Sz0lnqVUN8sfvjmehpEBDjdErekSlQJ4xWEQQ9agdxz7WCSCgPJVnwA6B3GsnL5dleMObk7eGUj9DNMv4ETrvx/ZaS4bpjwS2TL9S5n9a6vx6my3VC3tLA5QAW+GBIfRD7/CwyGZnTJHtW5f6jlDWYS62LbFJKfI9hb8foR/XLvBhgxuiwfj7SjjAzpyAgq
-template:
-  data: null
-  metadata:
-    creationTimestamp: null
-    name: your-app
-    namespace: default
+  encryptedData:
+    your-data: AgBp1WS9Am1v5Mzb0VqqLXU498OJEuBynnMZH+Z1Zq8g4esy6L4dEZ5stjOhliiPsCKqCVVDGW9wKsley3NOaUBsxXy/zbTuvzPnWyFQLtDAlbpL8Oo4RIe5rnzbuUYUAjtrvfeZnzMRTd/CEU4BUl/nZ6WbYwesigRMZC/2D/7ypJrPw1O18VBp9D/Nc21qaFt6E6Q8VQcPNZ5Vywsjq+iArFe2Tqz30q3c/jIsdys0YxPxfttoI3Q0zAnNnlr3Ubsuo8eDF5U3zZ43wDyAi5JvqEhHGHdK8c3xtMBL5rnyOfr/dbihj1nuHIbF6aMSyGhf0QHwl+y9XBgy5ZOoS0R/1jKbzqaIge+aBxPdR5KvH/anIFHjVDQMn16hv/Ccly9S/UObenyyXGt+vJkixDPTP8rR8ZGJtmpvjc2CFjXyWtVKW1C16AD4uRbzHduxt10Af6Co2DNS/a3DMCLkRvxJBCZATRKtvuPCXP6xpYUWQq0T9p+SURzMPIRzzJWinuChIm8EpkPF3oh1wesps7wlZbdYagtnTQ4THsxpT8A7kpyB14iB/S4b9MDpEThGmxKeeuYu30FFYlt4cjW2kyX4y+eHPrHiqsCl57RbEYKNElaT87g0YnrvfQHkLD54X02GxdeQ9+rnL4yXerp42m7ilB/yFZqapENdlFKttNe6uUh/A7Co1Bu/Q2vdKJz6Fafb1d5/KttqdZyG+Jrd35LqIxLStWZNTZj6pa7B1jEA4C8GmpBr
+  template:
+    data: null
+    metadata:
+      creationTimestamp: null
+      name: your-app
+      namespace: flux-system
 ```
 
 **Note:**
